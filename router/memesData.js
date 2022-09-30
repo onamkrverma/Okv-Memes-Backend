@@ -16,12 +16,12 @@ router.get('/fetchallmemes', async(req,res)=>{
 // Route 2 add new memes data 
 router.post('/addmemes',fetchAdmin, async(req,res)=>{
     try {
-        const {title,description,previewUrl,posterUrl,tag} = req.body;
-        if(!title || !description || !previewUrl || !posterUrl || !tag){
+        const {title,description,videoUrl,posterUrl,tag} = req.body;
+        if(!title || !description || !videoUrl || !posterUrl || !tag){
            return res.status(422).json({error:"Filled all inputs properly"})
         }
         const memes = new Memes({
-            title,description,previewUrl,posterUrl,tag
+            title,description,videoUrl,posterUrl,tag
         });
         const saveMemes = await memes.save()
         res.json(saveMemes)
@@ -33,14 +33,14 @@ router.post('/addmemes',fetchAdmin, async(req,res)=>{
 })
 // rotes 3 for update data
 router.put('/updatememes/:id',fetchAdmin, async(req,res)=>{
-    const {title,description,previewUrl,posterUrl,tag} = req.body;
+    const {title,description,videoUrl,posterUrl,tag} = req.body;
     try {
         const newMemes = {};
-        if(title || description || previewUrl || posterUrl || tag){
+        if(title || description || videoUrl || posterUrl || tag){
             newMemes.title = title
             newMemes.description = description
-            newMemes.previewUrl = previewUrl
             newMemes.posterUrl = posterUrl
+            newMemes.videoUrl = videoUrl 
             newMemes.tag = tag
         }
         let memes = await Memes.findById(req.params.id);

@@ -9,7 +9,7 @@ const memesSchema = new mongoose.Schema({
         type: String,
         require:true
     },
-    previewUrl:{
+    videoUrl:{
         type: String,
         require:true
     },
