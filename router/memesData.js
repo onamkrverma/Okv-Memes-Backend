@@ -84,33 +84,6 @@ router.delete("/deletememes/:id", fetchAdmin, async (req, res) => {
 
 // routes 5 for download memes
 // /download?sourceurl={}&title={}
-// router.get("/download", async (req, res) => {
-//   const { sourceUrl, title } = req.query;
-//   try {
-//     if (!sourceUrl) {
-//       return res.status(404).json({ error: "sourceUrl not found" });
-//     }
-
-//     const response = await axios(sourceUrl, { responseType: "stream" });
-//     const videoPath = path.join(__dirname, `${title}.mp4`);
-//     const writeStream = fs.createWriteStream(videoPath);
-
-//     response.data.pipe(writeStream);
-
-//     writeStream.on("finish", () => {
-//       res.download(videoPath, `${title}.mp4`, (err) => {
-//         if (err) {
-//           res.status(500).json({ error: "Failed to download video" });
-//         }
-
-//         fs.unlinkSync(videoPath); // Remove the temporary file after download
-//       });
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "Failed to fetch video" });
-//   }
-// });
 router.get("/download", async (req, res) => {
   const { sourceUrl, title } = req.query;
   try {
