@@ -5,6 +5,7 @@ const fetchAdmin = require("../middleware/fetchAdmin");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+const os = require("os");
 
 // route 1 get all data
 router.get("/fetchallmemes", async (req, res) => {
@@ -83,6 +84,33 @@ router.delete("/deletememes/:id", fetchAdmin, async (req, res) => {
 
 // routes 5 for download memes
 // /download?sourceurl={}&title={}
+// router.get("/download", async (req, res) => {
+//   const { sourceUrl, title } = req.query;
+//   try {
+//     if (!sourceUrl) {
+//       return res.status(404).json({ error: "sourceUrl not found" });
+//     }
+
+//     const response = await axios(sourceUrl, { responseType: "stream" });
+//     const videoPath = path.join(__dirname, `${title}.mp4`);
+//     const writeStream = fs.createWriteStream(videoPath);
+
+//     response.data.pipe(writeStream);
+
+//     writeStream.on("finish", () => {
+//       res.download(videoPath, `${title}.mp4`, (err) => {
+//         if (err) {
+//           res.status(500).json({ error: "Failed to download video" });
+//         }
+
+//         fs.unlinkSync(videoPath); // Remove the temporary file after download
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Failed to fetch video" });
+//   }
+// });
 router.get("/download", async (req, res) => {
   const { sourceUrl, title } = req.query;
   try {
@@ -91,7 +119,7 @@ router.get("/download", async (req, res) => {
     }
 
     const response = await axios(sourceUrl, { responseType: "stream" });
-    const videoPath = path.join(__dirname, `${title}.mp4`);
+    const videoPath = path.join(os.tmpdir(), `${title}.mp4`); // Use the tmpdir() method to get the /tmp directory path
     const writeStream = fs.createWriteStream(videoPath);
 
     response.data.pipe(writeStream);
